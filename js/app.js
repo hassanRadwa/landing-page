@@ -24,7 +24,19 @@
  * Start Helper Functions
  * 
 */
-
+function anchorOnclick(evt) {
+   //console.log(`is clicked`);
+   const sectionId = evt.target.getAttribute('href').split("#")[1];
+    const sections = document.getElementsByTagName('section');
+    for (let section of sections){
+        if (section.id === sectionId){
+            section.className="your-active-class";
+        }
+        else {
+            section.className="";
+        }
+    }
+}
 
 
 /**
@@ -34,19 +46,27 @@
 */
 
 // build the nav
-const headers = document.getElementsByTagName('h2');
-//const headers = sections.get('h2');
 
-//const myDocFrag = document.createDocumentFragment();
-for (let header of headers) {
-    //const newElement = document.createElement('li');
-    //newElement.innerText = sections[i].getElementsByTagName('h2').innerText;
-    console.log(header.innerText);
-    //fragment.appendChild(newElement);
+
+const sections = document.getElementsByTagName('section');
+const myDocFrag = document.createDocumentFragment();
+for (let section of sections) {
+    const newLinkElement = document.createElement('a');
+    newLinkElement.href = `#${section.getAttribute('id')}`;
+    newLinkElement.innerText = section.getAttribute('data-nav');
+    const newLiElement = document.createElement('li');
+    newLiElement.appendChild(newLinkElement);
+    //newElement.innerText = section.getAttribute('data-nav');
+    newLiElement.className = 'menu__link';
+    //console.log(section.getAttribute('data-nav'));
+    myDocFrag.appendChild(newLiElement);
 };
+const navList=document.getElementById('navbar__list');
+console.log('hi');
+//myDocFrag.addEventListener('click', anchorOnclick);
 
-//document.body.appendChild(fragment);
-
+navList.appendChild(myDocFrag);
+navList.addEventListener("click",anchorOnclick);
 
 // Add class 'active' to section when near top of viewport
 
