@@ -36,6 +36,34 @@ function anchorOnclick(evt) {
             section.className="";
         }
     }
+    const liElements=document.getElementsByTagName('li');
+    console.log(window.getComputedStyle(evt.target).background);
+    //console.log(evt.target.getAttribute('style'));
+    
+    for (let liElement of liElements){
+        if ( liElement.firstChild.getAttribute('href') === evt.target.getAttribute('href')){
+            evt.target.className = 'active';
+        }
+        else {
+            liElement.firstChild.className = 'menu__link';
+        }
+    }
+    //const hoverStyle = document.querySelector('.navbar__menu .menu__link'),':hover');
+    //evt.target.style = hoverStyle;
+    
+    //console.log(document.styleSheets[0]);
+    //this.className = "active";
+    //evt.target.style.background = '#333';
+}
+
+function setActive(e)
+{
+    //e.preventDefault();
+    //console.log('hi');
+    console.log(e.target);
+    //e.target.setAttribute('style','background-color: red;')
+    e.target.style.background = '#333';
+
 }
 
 
@@ -57,16 +85,18 @@ for (let section of sections) {
     const newLiElement = document.createElement('li');
     newLiElement.appendChild(newLinkElement);
     //newElement.innerText = section.getAttribute('data-nav');
-    newLiElement.className = 'menu__link';
+    //newLiElement.className = 'menu__link';
+    newLinkElement.className = 'menu__link';
     //console.log(section.getAttribute('data-nav'));
     myDocFrag.appendChild(newLiElement);
 };
 const navList=document.getElementById('navbar__list');
-console.log('hi');
-//myDocFrag.addEventListener('click', anchorOnclick);
+
 
 navList.appendChild(myDocFrag);
 navList.addEventListener("click",anchorOnclick);
+//navList.addEventListener('mouseover',setActive);
+
 
 // Add class 'active' to section when near top of viewport
 
