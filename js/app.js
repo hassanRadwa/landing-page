@@ -17,6 +17,15 @@
  * Define Global Variables
  * 
 */
+let activeSectionId='section1';
+let sectionArray=[];
+const sectionsTmp = document.getElementsByTagName('section');
+for (let sectionTmp of sectionsTmp){
+    console.log(`sectionId: ${sectionTmp.id}`);
+    sectionArray.push({ name: `${sectionTmp.id}`, value: [sectionTmp.offsetTop, sectionTmp.offsetTop + sectionTmp.offsetHeight] });
+    //sectionArray.push({ name: `${sectionTmp.id}_start`, value: sectionTmp.offsetTop});
+    //sectionArray.push({ name: `${sectionTmp.id}_end`, value: sectionTmp.offsetTop + sectionTmp.offsetHeight });
+}
 
 
 /**
@@ -25,11 +34,13 @@
  * 
 */
 function anchorOnclick(evt) {
-   //console.log(`is clicked`);
-   const sectionId = evt.target.getAttribute('href').split("#")[1];
+    
+   activeSectionId = evt.target.getAttribute('href').split("#")[1];
+   
+   // add circles effect
     const sections = document.getElementsByTagName('section');
     for (let section of sections){
-        if (section.id === sectionId){
+        if (section.id === activeSectionId){
             section.className="your-active-class";
         }
         else {
@@ -37,9 +48,10 @@ function anchorOnclick(evt) {
         }
     }
     const liElements=document.getElementsByTagName('li');
-    console.log(window.getComputedStyle(evt.target).background);
+    //console.log(window.getComputedStyle(evt.target).background);
     //console.log(evt.target.getAttribute('style'));
     
+    // change background on click and stay
     for (let liElement of liElements){
         if ( liElement.firstChild.getAttribute('href') === evt.target.getAttribute('href')){
             evt.target.className = 'active';
@@ -48,6 +60,7 @@ function anchorOnclick(evt) {
             liElement.firstChild.className = 'menu__link';
         }
     }
+    //console.log(window.href);
     //const hoverStyle = document.querySelector('.navbar__menu .menu__link'),':hover');
     //evt.target.style = hoverStyle;
     
@@ -64,6 +77,47 @@ function setActive(e)
     //e.target.setAttribute('style','background-color: red;')
     e.target.style.background = '#333';
 
+}
+
+function scrollHandler(evt)
+{
+    let fromTop = window.scrollY;
+    // let section = document.getElementById(activeSectionId);
+    const liElements=document.getElementsByTagName('li');
+    // let newSecId=parseInt(activeSectionId.split('section')[1]);
+    // newSecId -= 1; // subtract one to start woth zero index
+    // console.log(`activeSectionId: ${activeSectionId}`);
+    // console.log(`newSecId: ${newSecId}`);
+    // if (
+    //     section.offsetTop <= fromTop &&
+    //     section.offsetTop + section.offsetHeight > fromTop
+    //   )
+    //   {
+    //     //section.scrollIntoView();
+    //     liElements[newSecId].firstChild.className = 'active';
+    //   }
+    // else{
+    //     newSecId += 2;
+    //     console.log(`else: newSecId: ${newSecId}`);
+    //     activeSectionId = `section${newSecId}`;
+    //     liElements[newSecId].firstChild.className = 'menu__link';
+
+    // }
+    //console.log(section);
+    for (let idx=0; idx<liElements.length; idx++) {
+        if (
+            sectionArray[idx].value[0] <= fromTop &&
+            sectionArray[idx].value[1] > fromTop
+            )
+        {
+            liElements[idx].firstChild.className = 'active';
+        }
+        else
+        {
+            liElements[idx].firstChild.className = 'menu__link';
+        }
+    }
+    
 }
 
 
@@ -96,7 +150,8 @@ const navList=document.getElementById('navbar__list');
 navList.appendChild(myDocFrag);
 navList.addEventListener("click",anchorOnclick);
 //navList.addEventListener('mouseover',setActive);
-
+//const mainTag=document.getElementsByTagName('main')[0];
+window.addEventListener('scroll',scrollHandler);
 
 // Add class 'active' to section when near top of viewport
 
