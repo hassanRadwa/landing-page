@@ -131,9 +131,12 @@ function scrollHandler(evt)
             }
         }
     }
-
+    console.log(`----scrollHandler: activeSectionId: ${activeSectionId}`);
+    // change section ID in the URL
+    window.history.pushState("", "", `#${activeSectionId}`);
     // add circles effect
     addCirclesEffect();
+
     
 }
 
