@@ -30,12 +30,9 @@ let doScroll = 1;
 */
 function anchorOnclick(evt) {
    activeSectionId = evt.target.getAttribute('href').split("#")[1];
-   //console.log(`anchorOnclick: activeSectionId: ${activeSectionId}`);
    // add circles effect
     addCirclesEffect();
     const liElements=document.getElementsByTagName('li');
-    //console.log(window.getComputedStyle(evt.target).background);
-    //console.log(evt.target.getAttribute('style'));
     doScroll = 0; // disable scroll with on click
     const myDocFrag = document.createDocumentFragment();
     // change background on click and stay
@@ -47,15 +44,6 @@ function anchorOnclick(evt) {
             liElement.firstChild.className = 'menu__link';
         }
     }
-    //console.log(`anchorOnclick: 1 doScroll: ${doScroll}`);
-    
-    //console.log(window.href);
-    //const hoverStyle = document.querySelector('.navbar__menu .menu__link'),':hover');
-    //evt.target.style = hoverStyle;
-    
-    //console.log(document.styleSheets[0]);
-    //this.className = "active";
-    //evt.target.style.background = '#333';
 }
 
 function addCirclesEffect() {
@@ -72,9 +60,7 @@ function addCirclesEffect() {
 
 function setDoScroll()
 {
-    //console.log(`setDoScroll: 1 doScroll: ${doScroll}`);
     doScroll = 1;
-    //console.log(`setDoScroll: 2 doScroll: ${doScroll}`);
 }
 
 function scrollHandler(evt)
@@ -83,18 +69,13 @@ function scrollHandler(evt)
     {
         let fromTop = Math.ceil(window.scrollY);
         let secMargin = 0;
-        //console.log(`scrollHandler: fromTop: ${fromTop}`);
         const liElements=document.getElementsByTagName('li');
-        //console.log(`scrollHandler: activeSectionId: ${activeSectionId}`);
         //get active section id after reload
         if (activeSectionId == ''){
             // activeSectionId = 'section1';
             const sectionsTmp = document.getElementsByTagName('section');
             for (let sectionTmp of sectionsTmp){
                 secMargin = Math.floor(sectionTmp.offsetHeight * 0.5);
-                //console.log(`sectionId: ${sectionTmp.id}`);
-                //console.log(`scrollHandler: sectionTmp.offsetTop: ${sectionTmp.offsetTop}`);
-                //console.log(`scrollHandler: sectionTmp_end: ${sectionTmp.offsetTop + sectionTmp.offsetHeight}`);
                 if (
                     sectionTmp.offsetTop - secMargin <= fromTop &&
                     (sectionTmp.offsetTop + sectionTmp.offsetHeight - secMargin) > fromTop
@@ -102,8 +83,6 @@ function scrollHandler(evt)
                 {
                     activeSectionId = sectionTmp.id;
                     secAncor = `#${activeSectionId}`;
-                    //console.log(`scrollHandler: activeSectionId: ${activeSectionId}`);
-                    //console.log(`scrollHandler: secAncor: ${secAncor}`);
                     break;
                 }
             }
@@ -112,9 +91,6 @@ function scrollHandler(evt)
         let currSection = document.getElementById(activeSectionId);
         let currSecId=parseInt(activeSectionId.split('section')[1]);
         secMargin = Math.floor(currSection.offsetHeight * 0.5);
-        //console.log(`scrollHandler: currSecId: ${currSecId}`);
-        //console.log(`scrollHandler: currSection.offsetTop: ${currSection.offsetTop}`);
-        //console.log(`scrollHandler: currSection_end: ${currSection.offsetTop + currSection.offsetHeight - secMargin}`);
         let newSecId;
         if (
             currSection.offsetTop - secMargin <= fromTop &&
@@ -123,35 +99,27 @@ function scrollHandler(evt)
         { // in the same section
             liElements[currSecId-1].firstChild.className = 'active';
             secAncor = `#${activeSectionId}`;
-            //console.log(`scrollHandler: currSecId: ${currSecId}`);
-            //console.log(`scrollHandler: activeSectionId: ${activeSectionId}`);
         }
         else{ // section changed up or down
             
             // get new section
             if (fromTop < currSection.offsetTop - secMargin) { // scroll up
-                //console.log('scrollHandler: scroll up');
                 newSecId = currSecId - 1;
                 if (newSecId - 1 >= 0) {
                     liElements[newSecId-1].firstChild.className = 'active';
                     activeSectionId = `section${newSecId}`;
                     secAncor = `#${activeSectionId}`;
-                    //console.log(`scrollHandler: newSecId: ${newSecId}`);
-                    //console.log(`scrollHandler: activeSectionId: ${activeSectionId}`);
                 }
                 else{ // reached the top of the page
                     secAncor = '';
                 }
             }
             else{ // scroll down
-                //console.log('scrollHandler: scroll down');
                 newSecId = currSecId + 1;
                 if (newSecId - 1 < liElements.length) {
                     liElements[newSecId-1].firstChild.className = 'active';
                     activeSectionId = `section${newSecId}`;
                     secAncor = `#${activeSectionId}`;
-                    //console.log(`scrollHandler: newSecId: ${newSecId}`);
-                    //console.log(`scrollHandler: activeSectionId: ${activeSectionId}`);
                 }
                 else{ // reached the end of the page
                     secAncor = '';
@@ -160,9 +128,6 @@ function scrollHandler(evt)
             liElements[currSecId-1].firstChild.className = 'menu__link';
         }
         }
-        //console.log(`----scrollHandler: activeSectionId: ${activeSectionId}`);
-        //console.log(`----scrollHandler: secAncor: ${secAncor}`);
-        //console.log(`----scrollHandler: pageUrl: ${pageUrl}`);
         // change section ID in the URL
         window.history.pushState("", "", `${pageUrl}${secAncor}`);
         // add circles effect
@@ -181,11 +146,9 @@ function scrollHandler(evt)
 
 
 const navList=document.getElementById('navbar__list');
-//console.log(navList.childNodes.length);
 if (navList.childNodes.length === 0)
 {
     const sections = document.getElementsByTagName('section');
-    //console.log(sections.length);
     const myDocFrag = document.createDocumentFragment();
     for (let section of sections) {
         const newLinkElement = document.createElement('a');
@@ -195,7 +158,6 @@ if (navList.childNodes.length === 0)
         newLiElement.appendChild(newLinkElement);
         //newElement.innerText = section.getAttribute('data-nav');
         newLinkElement.className = 'menu__link';
-        //console.log(section.getAttribute('data-nav'));
         myDocFrag.appendChild(newLiElement);
     }
     
