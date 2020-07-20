@@ -28,22 +28,6 @@ let doScroll = 1;
  * Start Helper Functions
  * 
 */
-function anchorOnclick(evt) {
-   activeSectionId = evt.target.getAttribute('href').split("#")[1];
-   // add circles effect
-    addCirclesEffect();
-    const liElements=document.getElementsByTagName('li');
-    doScroll = 0; // disable scroll with on click
-    // change background on click and stay
-    for (let liElement of liElements){
-        if ( liElement.firstChild.getAttribute('href') === evt.target.getAttribute('href')){
-            evt.target.className = 'active';
-        }
-        else {
-            liElement.firstChild.className = 'menu__link';
-        }
-    }
-}
 
 function addCirclesEffect() {
     const sections = document.getElementsByTagName('section');
@@ -57,7 +41,75 @@ function addCirclesEffect() {
     }
 }
 
-function setDoScroll()
+
+
+/**
+ * End Helper Functions
+ * Begin Main Functions
+ * 
+*/
+
+// build the nav
+
+
+const navList=document.getElementById('navbar__list');
+if (navList.childNodes.length === 0)
+{
+    const sections = document.getElementsByTagName('section');
+    const myDocFrag = document.createDocumentFragment();
+    for (let section of sections) {
+        const newLinkElement = document.createElement('a');
+        newLinkElement.href = `#${section.getAttribute('id')}`;
+        newLinkElement.innerText = section.getAttribute('data-nav');
+        const newLiElement = document.createElement('li');
+        newLiElement.appendChild(newLinkElement);
+        newLinkElement.className = 'menu__link';
+        myDocFrag.appendChild(newLiElement);
+    }
+    
+    navList.appendChild(myDocFrag);
+    navList.addEventListener("click",anchorOnclick);
+    // Scroll to anchor ID using scrollTO event
+    window.addEventListener('scroll',scrollHandler);
+    window.addEventListener('wheel',setDoScroll);
+    window.addEventListener('keydown',setDoScroll);
+    window.addEventListener("mousedown", setDoScroll);
+}
+
+
+
+
+
+
+/**
+ * End Main Functions
+ * Begin Events
+ * 
+*/
+
+// Build menu 
+
+// Scroll to section on link click
+
+function anchorOnclick(evt) {
+    activeSectionId = evt.target.getAttribute('href').split("#")[1];
+    // Add class 'active' to section when near top of viewport
+    // add circles effect
+     addCirclesEffect();
+     const liElements=document.getElementsByTagName('li');
+     doScroll = 0; // disable scroll with on click
+     // change background on click and stay
+     for (let liElement of liElements){
+         if ( liElement.firstChild.getAttribute('href') === evt.target.getAttribute('href')){
+             evt.target.className = 'active';
+         }
+         else {
+             liElement.firstChild.className = 'menu__link';
+         }
+     }
+ }
+
+ function setDoScroll()
 {
     doScroll = 1;
 }
@@ -90,6 +142,7 @@ function scrollHandler(evt)
             let currSecId=parseInt(activeSectionId.split('section')[1]);
             secMargin = Math.floor(currSection.offsetHeight * 0.5);
             let newSecId;
+            // Set sections as active
             if (
                 currSection.offsetTop - secMargin <= fromTop &&
                 currSection.offsetTop + currSection.offsetHeight - secMargin > fromTop
@@ -128,59 +181,12 @@ function scrollHandler(evt)
         }
         // change section ID in the URL
         window.history.pushState("", "", `${pageUrl}${secAncor}`);
+        // Add class 'active' to section when near top of viewport
         // add circles effect
         addCirclesEffect();
     }
 
 }
 
-/**
- * End Helper Functions
- * Begin Main Functions
- * 
-*/
-
-// build the nav
-
-
-const navList=document.getElementById('navbar__list');
-if (navList.childNodes.length === 0)
-{
-    const sections = document.getElementsByTagName('section');
-    const myDocFrag = document.createDocumentFragment();
-    for (let section of sections) {
-        const newLinkElement = document.createElement('a');
-        newLinkElement.href = `#${section.getAttribute('id')}`;
-        newLinkElement.innerText = section.getAttribute('data-nav');
-        const newLiElement = document.createElement('li');
-        newLiElement.appendChild(newLinkElement);
-        newLinkElement.className = 'menu__link';
-        myDocFrag.appendChild(newLiElement);
-    }
-    
-    navList.appendChild(myDocFrag);
-    navList.addEventListener("click",anchorOnclick);
-    window.addEventListener('scroll',scrollHandler);
-    window.addEventListener('wheel',setDoScroll);
-    window.addEventListener('keydown',setDoScroll);
-    window.addEventListener("mousedown", setDoScroll);
-}
-// Add class 'active' to section when near top of viewport
-
-
-// Scroll to anchor ID using scrollTO event
-
-
-/**
- * End Main Functions
- * Begin Events
- * 
-*/
-
-// Build menu 
-
-// Scroll to section on link click
-
-// Set sections as active
 
 
